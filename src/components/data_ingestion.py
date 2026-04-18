@@ -109,7 +109,7 @@ class DataIngestion:
 
             _schema_config = self.utils.read_schema_config_file()
 
-            dataframe = dataframe.drop(_schema_config["drop_columns"], axis=1)
+            dataframe = dataframe.drop(_schema_config["drop_columns"],errors='ignore')
 
             logging.info("Got the data from mongodb")
 

@@ -5,7 +5,9 @@ from fastapi.responses import Response
 from uvicorn import run as app_run
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-
+from pydantic import BaseModel
+from dotenv import load_dotenv
+import os
 
 from src.pipeline.prediction_pipeline import PredictionPipeline
 from src.pipeline.train_pipeline import TrainPipeline
@@ -13,7 +15,9 @@ from src.constant.application import *
 
 import warnings
 warnings.filterwarnings('ignore')
-
+load_dotenv()
+print('MONGODB_URL:',os.getenv('MONGODB_URL'))
+print('MONGODB_URL_KEY:',os.getenv('MONGODB_URL_KEY'))
 app = FastAPI()
 
 
@@ -96,6 +100,10 @@ async def trainRouteClient():
     except Exception as e:
         return Response(f"Error Occurred! {e}")
 
+@app.get('/test_env')
+async def test_env():
+    mongo_url=os.getenv('MONGODB_URL')
+    return{'MONGODB_URL':mongo_url}
 
 @app.get("/")
 async def predictGetRouteClient(request: Request):
